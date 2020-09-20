@@ -8,10 +8,13 @@ public class Shot : MonoBehaviour
     Vector2 shotDirection;
     bool shooting = false;
     Rigidbody2D rb;
+    BoxCollider2D coll;
+    public bool hasHit = false;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        coll = GetComponent<BoxCollider2D>();
     }
 
 

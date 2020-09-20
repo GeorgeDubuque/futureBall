@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 6141021168189877652}
   - component: {fileID: 1457019355751676381}
   - component: {fileID: 651010910901962057}
-  - component: {fileID: 8072671207271884310}
+  - component: {fileID: 366719907980768144}
   m_Layer: 0
   m_Name: Shot
-  m_TagString: Untagged
+  m_TagString: Damage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 50
+  hasHit: 0
 --- !u!50 &651010910901962057
 Rigidbody2D:
   serializedVersion: 4
@@ -118,8 +119,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!61 &8072671207271884310
-BoxCollider2D:
+--- !u!60 &366719907980768144
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -127,7 +128,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 3235182140292484417}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: ceb39ec79825af641a0071d5f6c495d3, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -141,6 +142,8 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: 0.5}
+      - {x: -0.4330127, y: -0.25000003}
+      - {x: 0.43301272, y: -0.24999994}

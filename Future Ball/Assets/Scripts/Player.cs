@@ -20,6 +20,9 @@ public class Player : MonoBehaviour
     public GameManager gameManager;
     CircleCollider2D collider;
     Rigidbody2D rb;
+    public bool controlsEnabled = true;
+    public GameObject playerBroken;
+    public Hearts hearts;
     
     void Start()
     {
@@ -51,7 +54,10 @@ public class Player : MonoBehaviour
         }
         else
         {
-            currDirection = new Vector2(horizontalInput, verticalInput).normalized;
+            if (controlsEnabled)
+            {
+                currDirection = new Vector2(horizontalInput, verticalInput).normalized;
+            }
         }
 
         playerPos = new Vector2(transform.position.x, transform.position.y);
@@ -63,10 +69,6 @@ public class Player : MonoBehaviour
         else
         {
             if (seeingFuture)
-            {
-                gameManager.ResetLevel();
-            }
-            else
             {
                 gameManager.ResetLevel();
             }
@@ -117,15 +119,16 @@ public class Player : MonoBehaviour
         shieldColor.a = .5f;
         shield.GetComponent<SpriteRenderer>().color = shieldColor;
 
-        Color playerColor = transform.GetComponent<MeshRenderer>().sharedMaterial.color;
+        Color playerColor = transform.GetComponent<MeshRenderer>().material.color;
         playerColor.a = .5f;
-        transform.GetComponent<MeshRenderer>().sharedMaterial.color = playerColor;
+        transform.GetComponent<MeshRenderer>().material.color = playerColor;
 
         currSpeed = movementSpeed;
     }
 
     public void StartPresentSelf()
     {
+        controlsEnabled = true;
         collider.isTrigger = false;
         shield.gameObject.SetActive(true);
         Color shieldColor = shield.GetComponent<SpriteRenderer>().color;
@@ -137,5 +140,32 @@ public class Player : MonoBehaviour
         transform.GetComponent<MeshRenderer>().sharedMaterial.color = playerColor;
 
         currSpeed = movementSpeed;
+    }
+
+    public void DisablePlayer()
+    {
+        shield.gameObject.SetActive(false);
+        gameObject.SetActive(false);
+    }
+
+     
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Damage") && collision.otherCollider.CompareTag("Player"))
+        {
+            Shot shot = collision.collider.GetComponent<Shot>();
+            if (!shot.hasHit)
+            {
+                shot.hasHit = true;
+                if (hearts.BreakHeart())
+                {
+                    GameObject brokenClone = Instantiate(playerBroken, null);
+                    brokenClone.transform.position = transform.position;
+                    Destroy(brokenClone, 3f);
+                    DisablePlayer();
+                    gameManager.ResetLevelAfterSeconds();
+                }
+            }
+        }
     }
 }
